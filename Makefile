@@ -14,9 +14,11 @@ CXX = avr-g++
 OBJCOPY = avr-objcopy
 AVRDUDE = avrdude
 MCU = atmega328p
+prog_MCU = m328p	# avrdude programmer MCU type.
 F_CPU = 16000000UL
 PORT = /dev/ttyUSB0
 PROGRAMMER = arduino
+AVRDUDE_FLAGS = -c $(PROGRAMMER) -D -V -b 57600
 
 # Source files
 SRC = ILI9327.ino
@@ -103,8 +105,9 @@ $(HEX): $(OBJ) core/core.a lib/Wire.o lib/twi.o lib/SPI.o lib/Adafruit_BusIO.o l
 
 # Upload the .hex file to the Arduino
 upload: $(HEX)
-	$(AVRDUDE) -v -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -U flash:w:$(HEX):i
+	$(AVRDUDE) -v -p $(prog_MCU) $(AVRDUDE_FLAGS) -P $(PORT) -U flash:w:$(HEX):i
 
 # Clean up generated files
 clean:
-	rm -f *.o *.elf *.hex *.cpp core/*.o core/core.a core/ lib/*.o lib/
+	rm -f *.o *.elf *.hex *.cpp
+	rm -rf core/ lib/
