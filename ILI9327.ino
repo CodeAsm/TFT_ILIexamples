@@ -8,74 +8,65 @@
 #define LCD_RD A0 // LCD Read
 #define LCD_RESET A4
 
-#define	BLACK   0x0000
-#define	BLUE    0x001F
-#define	RED     0xF800
-#define	GREEN   0x07E0
+#define BLACK   0x0000
+#define BLUE    0x001F
+#define RED     0xF800
+#define GREEN   0x07E0
 #define CYAN    0x07FF
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-int rotation = 0;
 
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
-void setup(void) {
+uint16_t commonIDs[] = {0x9327, 0x9341, 0x9486, 0x7783, 0x8357, 0x7575};
+const int numIDs = sizeof(commonIDs) / sizeof(commonIDs[0]);
+
+void drawColoredBars() {
+  int w = tft.width();
+  int h = tft.height();
+  int barHeight = h / 6;
+
+  tft.fillRect(0, 0, w, barHeight, RED);
+  tft.fillRect(0, barHeight, w, barHeight, GREEN);
+  tft.fillRect(0, barHeight * 2, w, barHeight, BLUE);
+  tft.fillRect(0, barHeight * 3, w, barHeight, YELLOW);
+  tft.fillRect(0, barHeight * 4, w, barHeight, CYAN);
+  tft.fillRect(0, barHeight * 5, w, barHeight, MAGENTA);
+}
+
+void setup() {
   Serial.begin(115200);
-  // Initialize the built-in LED pin
-  pinMode(13, OUTPUT);
-
-  tft.reset();
-  uint16_t identifier = tft.readID(); // returns 0x9327 for ILI9327 LCD driver
-  tft.begin(identifier);
-  Serial.print("LCD driver = 0x");Serial.println(identifier, HEX);
-
-  for (int i = 0; i < 3; i++) {
-    digitalWrite(13, HIGH); // Turn the LED on
-    delay(500);             // Wait for 500ms
-    digitalWrite(13, LOW);  // Turn the LED off
-    delay(500);             // Wait for 500ms
+  Serial.println("TFT Controller Selector");
+  Serial.println("Available IDs:");
+  for (int i = 0; i < numIDs; i++) {
+    Serial.print("  0x");
+    Serial.println(commonIDs[i], HEX);
   }
+  Serial.println("Type an ID (e.g., 9327) or 'reset' to reset the Arduino.");
+  Serial.println();
 }
 
-void testLines() {
-  tft.setRotation(rotation);
-  tft.fillScreen(BLACK);
-  int           x1, y1, x2, y2,
-                w = tft.width(),
-                h = tft.height();
-  Serial.print("w="); Serial.print(w); Serial.print(", h="); Serial.println(h);
+void loop() {
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n');
+    input.trim(); // Remove any whitespace or newline characters
 
-  tft.setCursor(0, 0);
-  tft.setTextColor(WHITE);  tft.setTextSize(3);
-  tft.println("Rotation test");
-  tft.print("Rotation = "); tft.println(rotation);
+    if (input.equalsIgnoreCase("reset")) {
+      Serial.println("Resetting Arduino...");
+      delay(100);
+      asm volatile ("jmp 0"); // Reset the Arduino
+    } else {
+      uint16_t id = (uint16_t)strtol(input.c_str(), NULL, 16); // Convert input to hex
+      Serial.print("Trying ID: 0x");
+      Serial.println(id, HEX);
 
-  //Draw a rectangle around the screen
-  tft.drawRect(0, 0, w, h, BLUE);
-  //Draw crossing lines
-  tft.drawLine(0, 0, w, h, GREEN);
-  tft.drawLine(0, w, h, 0, YELLOW);
-  //Draw a circle at the screen center
-  tft.fillCircle(w / 2, h / 2, 5, RED);
+      tft.reset();
+      tft.begin(id);
 
-  //Draw a triangle at the screen center
-  int cx = w / 2, cy = h / 2, i = 30;
-  tft.drawTriangle(
-    cx    , cy - i, // peak
-    cx - i, cy + i, // bottom left
-    cx + i, cy + i, // bottom right
-    MAGENTA);
-}
-
-void loop(void) {
-  for (rotation = 0; rotation <= 3; rotation++) {
-    testLines();
-    delay (10000);
-	
-	// Blink the built-in LED to indicate the rotation change
-	digitalWrite(13, HIGH); // Turn the LED on
-	delay(500);             // Wait for 500ms
-	digitalWrite(13, LOW);  // Turn the LED off
+      Serial.println("Drawing colored bars...");
+      drawColoredBars();
+      Serial.println("Done. Type another ID or 'reset' to reset.");
+    }
   }
 }
