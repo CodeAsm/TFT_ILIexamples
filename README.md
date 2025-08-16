@@ -1,13 +1,15 @@
 # ILI9327 Rotation Test
 
-This project demonstrates a rotation test for a 3.2" TFT LCD screen using the ILI9327 driver. The test includes drawing shapes, lines, and text on the screen while rotating the display.
+This project demonstrates a few things for TFT LCD screen using the ILI series of drivers. The test includes drawing shapes, lines, and text on the screen while rotating the display. and detecting or selecting the controler.
 
 Note, this project skips using the arduino IDE and we compile using my silly makefile.
 
+- ILI_idtester.ino allows one to type an display controller id and see if it works.
+- ILI_font.ino  draws some text as a test, then prints what it recieves over serial.
+
 ## Features
 
-- Displays text and shapes on the ILI9327-based TFT LCD.
-- Tests screen rotation functionality.
+- Displays text and shapes on the ILI-based TFT LCD.
 - Uses the Adafruit GFX and Adafruit TFTLCD libraries for graphics rendering.
 
 ## How to Compile
