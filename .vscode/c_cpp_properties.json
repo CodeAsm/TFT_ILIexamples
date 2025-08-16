@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+				"${HOME}/.arduino15/libraries/TFT/src",
+				"${HOME}/.arduino15/libraries/Adafruit_GFX",
+				"${HOME}/.arduino15/libraries/Adafruit_TFTLCD/Adafruit_TFTLCD_Library-1.0.3/",
+				"${HOME}/.arduino15/libraries/Adafruit_BusIO",
+				"${HOME}/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+				"${HOME}/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard",
+				"${HOME}/.arduino15/packages/arduino/hardware/avr/1.8.6/libraries/Wire/src",
+				"${HOME}/.arduino15/packages/arduino/hardware/avr/1.8.6/libraries/SPI/src",
+				"./include"
+            ],
+            "defines": [
+				"ARDUINO=108",
+				"F_CPU=16000000UL",
+				"__AVR_ATmega328P__"
+			],
+            "compilerPath": "/usr/bin/avr-gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+			"intelliSenseMode": "gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

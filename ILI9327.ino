@@ -25,6 +25,7 @@ void setup(void) {
   tft.reset();
   uint16_t identifier = tft.readID(); // returns 0x9327 for ILI9327 LCD driver
   tft.begin(identifier);
+  Serial.print("LCD driver = 0x");Serial.println(identifier, HEX);
 }
 
 void testLines() {

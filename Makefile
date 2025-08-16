@@ -32,7 +32,7 @@ CXXFLAGS = $(CFLAGS) -std=c++11
 LDFLAGS = -mmcu=$(MCU) -flto -Wl,--gc-sections -ffunction-sections -fdata-sections
 
 # Include paths
-INCLUDES = -I$(ARDUINO_LIBS)/TFT/src/utility/ \
+INCLUDES = -I$(ARDUINO_LIBS)/TFT/src \
 		   -I$(ARDUINO_LIBS)/Adafruit_GFX \
 		   -I$(ARDUINO_LIBS)/Adafruit_TFTLCD/Adafruit_TFTLCD_Library-1.0.3/ \
 		   -I$(ARDUINO_LIBS)/Adafruit_BusIO \
