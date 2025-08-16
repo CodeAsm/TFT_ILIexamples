@@ -21,11 +21,21 @@ int rotation = 0;
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  // Initialize the built-in LED pin
+  pinMode(13, OUTPUT);
+
   tft.reset();
   uint16_t identifier = tft.readID(); // returns 0x9327 for ILI9327 LCD driver
   tft.begin(identifier);
   Serial.print("LCD driver = 0x");Serial.println(identifier, HEX);
+
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(13, HIGH); // Turn the LED on
+    delay(500);             // Wait for 500ms
+    digitalWrite(13, LOW);  // Turn the LED off
+    delay(500);             // Wait for 500ms
+  }
 }
 
 void testLines() {
@@ -62,5 +72,10 @@ void loop(void) {
   for (rotation = 0; rotation <= 3; rotation++) {
     testLines();
     delay (10000);
+	
+	// Blink the built-in LED to indicate the rotation change
+	digitalWrite(13, HIGH); // Turn the LED on
+	delay(500);             // Wait for 500ms
+	digitalWrite(13, LOW);  // Turn the LED off
   }
 }
