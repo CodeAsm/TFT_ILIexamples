@@ -11,6 +11,7 @@ Note, this project skips using the arduino IDE and we compile using my silly mak
 
 - Displays text and shapes on the ILI-based TFT LCD.
 - Uses the Adafruit GFX and Adafruit TFTLCD libraries for graphics rendering.
+  - Especially the TFTLCD lib seems very specific for their products. Might need to make a fork for mine.
 
 ## How to Compile
 
@@ -46,6 +47,20 @@ To compile and upload the code to your Arduino, follow these steps:
 - Ensure the correct board and port are specified in the `Makefile`.
 - If you encounter memory overflow issues, consider removing unused features or optimizing the code further.
 - Why are we not using the Arduino IDE? Because we dont want to, there is no why else. 
+- A custom rotation setting was needed to properly display, try:
+  ``ILI9341_MADCTL_MX | ILI9341_MADCTL_MV | ILI9341_MADCTL_ML;``
+
+## Attribution and resources
+
+Here i post some url that have helped me alott or where actually helpfull in a way:
+- https://github.com/adafruit/TFTLCD-Library
+- https://forum.arduino.cc/t/flip-mirror-a-tft-lcd-screen/227117/17 Actual post that showed me what register to toggle
+- https://forum.arduino.cc/t/ili9327-3-5-lcd-tft-with-arduino/278469/4 This post actually shows the display I have.
+- https://www.electro-tech-online.com/threads/ili9341-tft-display-switching-row-column-order.143224/ some actual example MADCTL uses
+- https://forum.arduino.cc/t/2-4-inch-tft-touch-lcd-screen-module-for-arduino-uno-r3-sd-low-price-jocks/217643/19
+- https://mcufriend.com/shop/class/145.html
+
+- Datasheet https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf
 
 ## License
 

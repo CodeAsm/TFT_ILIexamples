@@ -1,6 +1,7 @@
 //Rotation test for 3.2" TFT LCD ILI9327
 #include <Adafruit_GFX.h>    // https://github.com/adafruit/Adafruit-GFX-Library
 #include <Adafruit_TFTLCD.h> // https://github.com/adafruit/TFTLCD-Library
+#include <registers.h> // For register definitions
 
 #define LCD_CS A3 // Chip Select
 #define LCD_CD A2 // Command/Data
@@ -17,8 +18,8 @@
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 
-#define TFT_WIDTH  320
-#define TFT_HEIGHT 240
+//#define TFT_WIDTH  320	//320
+//#define TFT_HEIGHT 240	//240
 
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
@@ -26,33 +27,55 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 void drawColoredBars() {
   int w = tft.width();
   int h = tft.height();
-  int barHeight = h / 6;
+  int barHeight = h / 8;
+  int barWidth = w / 8;
+//
+//	---> x
+//  |
+//	|
+//	V y
+//
 
-  tft.fillRect(0, 0, w, barHeight, RED);
-  tft.fillRect(0, barHeight, w, barHeight, GREEN);
-  tft.fillRect(0, barHeight * 2, w, barHeight, BLUE);
-  tft.fillRect(0, barHeight * 3, w, barHeight, YELLOW);
-  tft.fillRect(0, barHeight * 4, w, barHeight, CYAN);
-  tft.fillRect(0, barHeight * 5, w, barHeight, MAGENTA);
-  tft.setCursor(110, 10);
+		//	   x, y, w, h, color
+  tft.fillRect(0, 0, barWidth, h, RED);
+  tft.fillRect(barWidth, 0, barWidth, h, GREEN);
+  tft.fillRect(barWidth * 2, 0, barWidth, h, BLUE);
+  tft.fillRect(barWidth * 3, 0, barWidth, h, YELLOW);
+  tft.fillRect(barWidth * 4, 0, barWidth, h, CYAN);
+  tft.fillRect(barWidth * 5, 0, barWidth, h, MAGENTA);
+  tft.fillRect(barWidth * 6, 0, barWidth, h, BLACK);
+  tft.fillRect(barWidth * 7, 0, barWidth, h, WHITE);
+  tft.setCursor(2, 2);
   tft.setTextColor(WHITE);
-  tft.setTextSize(2);
-  tft.println("TFT Text Test");
+  tft.setTextSize(1);
+  tft.println("Font test 1.3");
+
 }
 
 void setup() {
 	Serial.begin(115200);
 	Serial.println("TFT Text test");
 
-	uint16_t id = 0x9341;
+	uint16_t id = 0x9341; // 0x8357 Default ID for testing, can be changed to any common ID
 	Serial.print("Trying ID: 0x");
 	Serial.println(id, HEX);
 
 	tft.reset();
 	tft.begin(id);
+	tft.setRotation(0); // Set rotation to 1 (portrait mode)
+  // Send a custom MADCTL command to enable mirroring
+  // ILI9341_MADCTL_MV 	
+  // ILI9341_MADCTL_MX
+  // ILI9341_MADCTL_MY
+  // ILI9341_MADCTL_BGR
+	// Set the memory access control register to enable mirroring
+ 	//tft.writeRegister8(ILI9341_MADCTL, ILI9341_MADCTL_BGR);
 
+	//Latest for 9341
+    tft.writeRegister8(ILI9341_MADCTL, ILI9341_MADCTL_MX | ILI9341_MADCTL_MV | ILI9341_MADCTL_ML); // MADCTL
 	Serial.println("Drawing colored bars...");
 	drawColoredBars();
+	
 }
 
 void loop() {
