@@ -1,6 +1,6 @@
 //Rotation test for 3.2" TFT LCD ILI9327
 #include <Adafruit_GFX.h>    // https://github.com/adafruit/Adafruit-GFX-Library
-#include <Adafruit_TFTLCD.h> // https://github.com/adafruit/TFTLCD-Library
+#include <CodeAsm_TFTLCD.h> // https://github.com/CodeAsm/TFTLCD-Library
 #include <registers.h> // For register definitions
 
 #define LCD_CS A3 // Chip Select
@@ -21,7 +21,10 @@
 //#define TFT_WIDTH  320	//320
 //#define TFT_HEIGHT 240	//240
 
-Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
+//#define TFTWIDTH 410
+//#define TFTHEIGHT 320
+
+CodeAsm_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 
 void drawColoredBars() {
@@ -49,6 +52,9 @@ void drawColoredBars() {
   tft.setTextColor(WHITE);
   tft.setTextSize(1);
   tft.println("Font test 1.3");
+  tft.print("With: ");tft.println(tft.width());
+  tft.print("Height: ");tft.println(tft.height());
+  
 
 }
 
@@ -62,7 +68,7 @@ void setup() {
 
 	tft.reset();
 	tft.begin(id);
-	tft.setRotation(0); // Set rotation to 1 (portrait mode)
+	tft.setRotation(1); // Set rotation to 1 (portrait mode)
   // Send a custom MADCTL command to enable mirroring
   // ILI9341_MADCTL_MV 	
   // ILI9341_MADCTL_MX

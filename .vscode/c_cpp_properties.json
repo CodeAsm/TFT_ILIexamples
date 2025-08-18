@@ -5,6 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
 				"${HOME}/.arduino15/libraries/TFT/src",
+				"${HOME}/.arduino15/libraries/CodeAsm_TFTLCD",
 				"${HOME}/.arduino15/libraries/Adafruit_GFX",
 				"${HOME}/.arduino15/libraries/Adafruit_TFTLCD/Adafruit_TFTLCD_Library-1.0.3/",
 				"${HOME}/.arduino15/libraries/Adafruit_BusIO",

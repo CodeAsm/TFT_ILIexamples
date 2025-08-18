@@ -34,7 +34,7 @@ LDFLAGS = -mmcu=$(MCU) -flto -Wl,--gc-sections -ffunction-sections -fdata-sectio
 # Include paths
 INCLUDES = -I$(ARDUINO_LIBS)/TFT/src \
 		   -I$(ARDUINO_LIBS)/Adafruit_GFX \
-		   -I$(ARDUINO_LIBS)/Adafruit_TFTLCD/Adafruit_TFTLCD_Library-1.0.3/ \
+		   -I$(ARDUINO_LIBS)/CodeAsm_TFTLCD/ \
 		   -I$(ARDUINO_LIBS)/Adafruit_BusIO \
 		   -I$(ARDUINO_CORE) \
 		   -I$(ARDUINO_LIB)/Wire/src \
@@ -67,10 +67,10 @@ core/core.a:
 	done
 	ar rcs core/core.a core/*.o
 
-# Compile Adafruit_TFTLCD library
-lib/Adafruit_TFTLCD.o:
+# Compile CodeAsmTFTLCD library
+lib/CodeAsm_TFTLCD.o:
 	mkdir -p lib
-	for file in $(HOME)/.arduino15/libraries/Adafruit_TFTLCD/Adafruit_TFTLCD_Library-1.0.3/*.cpp; do \
+	for file in $(HOME)/.arduino15/libraries/CodeAsm_TFTLCD/*.cpp; do \
 		$(CC) $(CXXFLAGS) -c $$file $(INCLUDES) -o lib/$$(basename $$file .cpp).o; \
 	done
 
@@ -99,7 +99,7 @@ lib/SPI.o:
 
 
 # Link the object file and generate the .hex file
-$(HEX): $(OBJ) core/core.a lib/Wire.o lib/twi.o lib/SPI.o lib/Adafruit_BusIO.o lib/Adafruit_GFX.o lib/Adafruit_TFTLCD.o
+$(HEX): $(OBJ) core/core.a lib/Wire.o lib/twi.o lib/SPI.o lib/Adafruit_BusIO.o lib/Adafruit_GFX.o lib/CodeAsm_TFTLCD.o
 	$(CC) $(LDFLAGS) $(OBJ) core/core.a lib/*.o -o $(PREPROCESSED_SRC:.cpp=.elf)
 	$(OBJCOPY) -O ihex -R .eeprom $(PREPROCESSED_SRC:.cpp=.elf) $@
 
