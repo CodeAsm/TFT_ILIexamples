@@ -23,7 +23,7 @@ uint16_t commonIDs[] = {0x9327, 0x9341, 0x9486, 0x7783, 0x8357, 0x7575};
 const int numIDs = sizeof(commonIDs) / sizeof(commonIDs[0]);
 int currentRotation = 0; // Default rotation
 
-void drawColoredBars() {
+void SetupScreen() {
   int w = tft.width();
   int h = tft.height();
   int barHeight = h / 6;
@@ -76,7 +76,7 @@ void loop() {
 	  
 	tft.invertDisplay(true); // Invert colors for better visibility
 
-      drawColoredBars(); // Redraw the bars with the new rotation
+      SetupScreen(); // Redraw the bars with the new rotation
     } else {
       uint16_t id = (uint16_t)strtol(input.c_str(), NULL, 16); // Convert input to hex
       Serial.print("Trying ID: 0x");
@@ -89,7 +89,7 @@ void loop() {
 
 
       Serial.println("Drawing colored bars...");
-      drawColoredBars();
+      SetupScreen();
       Serial.println("Done. Type another ID, 'rotation', or 'reset' to reset.");
     }
   }

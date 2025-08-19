@@ -27,7 +27,7 @@
 CodeAsm_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 
-void drawColoredBars() {
+void SetupScreen() {
   int w = tft.width();
   int h = tft.height();
   int barHeight = h / 8;
@@ -80,7 +80,7 @@ void setup() {
 	//Latest for 9341
     tft.writeRegister8(ILI9341_MADCTL, ILI9341_MADCTL_MX | ILI9341_MADCTL_MV | ILI9341_MADCTL_ML); // MADCTL
 	Serial.println("Drawing colored bars...");
-	drawColoredBars();
+	SetupScreen();
 	
 }
 
