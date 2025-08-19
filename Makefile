@@ -21,7 +21,7 @@ PROGRAMMER = arduino
 AVRDUDE_FLAGS = -c $(PROGRAMMER) -D -V -b 57600
 
 # Source files
-SRC = ILI_font.ino
+SRC = ILI_term.ino
 PREPROCESSED_SRC = $(SRC:.ino=.cpp)
 OBJ = $(PREPROCESSED_SRC:.cpp=.o)
 HEX = $(PREPROCESSED_SRC:.cpp=.hex)
